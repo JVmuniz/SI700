@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "1051749831627",
+    "firebase_url": "https://si700-84afe-default-rtdb.firebaseio.com",
+    "project_id": "si700-84afe",
+    "storage_bucket": "si700-84afe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1051749831627:android:0b64e38ac11579877b1c4e",
+        "android_client_info": {
+          "package_name": "com.example.atividade_2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUtJo69mJKbmG1pKB15mqSmWtleN22D6w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1051749831627:android:e18ace495df252e87b1c4e",
+        "android_client_info": {
+          "package_name": "projeto_mobile.app.conselhos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUtJo69mJKbmG1pKB15mqSmWtleN22D6w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

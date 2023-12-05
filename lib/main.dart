@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'adviceList.dart';
@@ -6,13 +7,13 @@ import 'profile.dart';
 import 'advice.dart';
 import 'home.dart';
 
-// void main() {
-//   runApp(const TabBarDemo());
-// }
+
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,  
+  );
+  FirebaseDatabase database = FirebaseDatabase.instance;
   runApp(MyApp());
 }
 
