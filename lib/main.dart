@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'adviceList.dart';
 import 'profile.dart';
 import 'advice.dart';
-import 'home.dart';
+//import 'home.dart';
 
 
 
@@ -13,7 +12,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,  
   );
-  FirebaseDatabase database = FirebaseDatabase.instance;
+  
   runApp(MyApp());
 }
 
@@ -21,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomeScreen(),
+      home: const TabBarDemo(),
     );
   }
 }
@@ -49,7 +48,7 @@ class TabBarDemo extends StatelessWidget {
             children: [
               AdviceScreen(), // Primeira Tela
               ProfileForm(), // Segunda Tela
-              AdviceListScreen(), // Terceira Tela
+              AdviceListScreen(userId : 'Nkv1P7qgH4uwQitmbN6'), // Terceira Tela
             ],
           ),
         ),
