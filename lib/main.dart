@@ -9,6 +9,7 @@ import 'advice.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,  
   );
