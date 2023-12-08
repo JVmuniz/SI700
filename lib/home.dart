@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
 
-
-
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -12,7 +10,7 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.login),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
             },
           ),
         ],

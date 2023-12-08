@@ -1,28 +1,28 @@
+import 'package:atividade_2/register.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'main.dart'; // Importe sua tela principal aqui
 
-class LoginScreen extends StatefulWidget {
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
+class LoginPage extends StatelessWidget {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
-class _LoginScreenState extends State<LoginScreen> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
-  Future<void> _signInWithEmailAndPassword() async {
+  Future<void> _login(BuildContext context) async {
     try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
       );
-
-      // Se a autenticação for bem-sucedida, você pode navegar para outra tela ou realizar outras ações
-      print("Usuário autenticado: ${userCredential.user!.email}");
-    } on FirebaseAuthException catch (e) {
-      // Handle errors, por exemplo, exibindo uma mensagem de erro para o usuário
-      print("Erro de autenticação: ${e.message}");
+      // Redirecione para a tela principal após o login bem-sucedido
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => TabBarDemo(userEmail: emailController.text,)), // Substitua MyHomePage() pela sua tela principal
+      );
+    } catch (e) {
+      // Lidar com erros de autenticação, por exemplo, exibir uma mensagem de erro
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Usuário ou senha inválidos'),
+      ));
     }
   }
 
@@ -33,29 +33,33 @@ class _LoginScreenState extends State<LoginScreen> {
         title: Text('Login'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                labelText: 'E-mail',
-              ),
-              keyboardType: TextInputType.emailAddress,
+            TextFormField(
+              controller: emailController,
+              decoration: InputDecoration(labelText: 'Email'),
             ),
-            SizedBox(height: 16),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(
-                labelText: 'Senha',
-              ),
+            TextFormField(
+              controller: passwordController,
+              decoration: InputDecoration(labelText: 'Senha'),
               obscureText: true,
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 16),
             ElevatedButton(
-              onPressed: _signInWithEmailAndPassword,
-              child: Text('Entrar'),
+              onPressed: () => _login(context),
+              child: Text('Login'),
+            ),
+            SizedBox(height: 16),
+            TextButton(
+              onPressed: () {
+                // Redirecione para a tela de cadastro quando o botão for pressionado
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RegisterScreen()), // Substitua RegisterPage() pela sua tela de cadastro
+                );
+              },
+              child: Text('Ainda não tem uma conta? Cadastre-se'),
             ),
           ],
         ),

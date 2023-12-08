@@ -1,7 +1,12 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'api_service.dart';
 
 class AdviceScreen extends StatefulWidget {
+  late String userId;
+
+  AdviceScreen({Key? key, required this.userId}) : super(key: key);
+
   @override
   _AdviceScreenState createState() => _AdviceScreenState();
 }
@@ -10,6 +15,7 @@ class _AdviceScreenState extends State<AdviceScreen> {
   final ApiService _apiService = ApiService();
   String? _randomAdvice = 'Carregando...';
   bool _isFavorited = false;
+  DatabaseReference ref = FirebaseDatabase.instance.ref().child('Users');
 
   @override
   void initState() {
@@ -22,26 +28,56 @@ class _AdviceScreenState extends State<AdviceScreen> {
     setState(() {
       _randomAdvice = advice ?? 'Erro ao carregar conselho aleatório';
     });
+    _isFavorited = false;
   }
 
   void _toggleFavorite() {
     setState(() {
       _isFavorited = !_isFavorited;
       if (_isFavorited) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+        ref.child(widget.userId)
+        .child('favoritos')
+        .push()
+        .set(_randomAdvice).whenComplete(() => ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
             content: Text('Conselho Favoritado'),
           ),
-        );
+        ));
+        
       } else {
+        DatabaseReference favoritosReference = ref.child(widget.userId)
+        .child('favoritos');
+        _removeAdviceFromFavorites(favoritosReference, _randomAdvice);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Conselho Removido'),
           ),
         );
       }
     });
   }
+
+  Future<void> _removeAdviceFromFavorites(
+    DatabaseReference favoritosReference, String? adviceToRemove) async {
+    DatabaseEvent event = await favoritosReference.once();
+    DataSnapshot snapshot = event.snapshot;
+    Map<dynamic, dynamic> favoritosMap = snapshot.value as Map<dynamic, dynamic>;
+
+    // Procurar a chave do conselho a ser removido
+    String? keyToRemove;
+    favoritosMap.forEach((key, value) {
+      if (value == adviceToRemove) {
+        keyToRemove = key;
+      }
+    });
+
+    // Remover o conselho da lista de favoritos
+    if (keyToRemove != null) {
+      favoritosReference.child(keyToRemove!).remove();
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +91,7 @@ class _AdviceScreenState extends State<AdviceScreen> {
           Container(
             width: 300,
             height: 200,
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.grey[200],
               borderRadius: BorderRadius.circular(10),
